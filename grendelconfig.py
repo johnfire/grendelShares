@@ -1,7 +1,7 @@
 
 import os
 import json
-
+import sys
 
 msgPath = "/media/grendelData102/GrendelData/grendelMsgs/"
 msgPathAI = "/media/grendelData102/GrendelData/grendelMsgs/AI"
@@ -10,18 +10,48 @@ msgPathOT = "/media/grendelData102/GrendelData/grendelMsgs/OT"
 fotoPath = "/media/grendelData102/GrendelData/grendelFotos/"
 audioPath = "/media/grendelData102/GrendelData/grendellAudio/"
 grendelOtherData = "/media/grendelData102/GrendelData/grendelOtherData/"
-grendelPeopleData = "/media/grendelData102/GrendelData/grendelPeopleData/"
+grendelWorldData = "/media/grendelData102/GrendelData/grendelWorldData/"
 processFotoPath ="/media/grendelData102/lowLevelPrograms/processFoto.py "
 
+
+
+#def makeMsg(title, text, priority, reciever, otherRecievers, files):
+#    mytime = time.time()
+#    mymessage = gc.message
+#    mymessage.write(mytime, title, text, "AI", priority, reciever, otherRecievers, files)
+
+
+################################################################
+def debugBreakPoint(location):
+    message ="any key to continue s stops program,at location "+ str(location)
+    myanswer = input(message)
+    if myanswer == "s":
+        sys.exit()
+
+###############################################################
+###############################################################
 class message():
 
-    def write(timeStamp, title, text, primeRecipient, priority, sender, otherRecipients, files ):
+    def __init__(self):
+        self.timeStamp = ""
+        self.title = ""
+        self.text = ""
+        self.primeRecipient = ""
+        self.priority = ""
+        self.sender = ""
+        self.otherRecipients = ""
+        self.files = ""
+
+      pass
+
+    def write(self,timeStamp, title, text, primeRecipient, priority, sender, otherRecipients, files ):
+
         print(timeStamp)
 
         myCurrentDir = os.getcwd()
-        mydata = [timeStamp, title, text, primeRecipient, priority, sender, otherRecipients, files]
+        mydata = [str(timeStamp), title, text, primeRecipient, priority, sender, otherRecipients, files]
         jsonData = json.dumps(mydata, sort_keys = True,  indent = 4, separators = (",", ": "))
-        filename = str(timeStamp)
+        filename = str(timeStamp)+sender
         if primeRecipient == "AI":
             os.chdir(msgPathAI)
         elif primeRecipient == "PY":
@@ -32,8 +62,8 @@ class message():
              f.write(jsonData)
         os.chdir(myCurrentDir)
 
-
-    def read(timeStamp, program):
+    ##########################################################
+    def read(self,timeStamp, program):
         myCurrentDir = os.getcwd()
         filename = timeStamp
         if program == "AI":
@@ -43,9 +73,12 @@ class message():
         elif program == "OT":
             os.chdir(msgPathOT)
         with open(filename, "r") as content:
-            datastuff = json.load(content)
+            datastuff = json.loads(content)
             return datastuff
         os.chdir(myCurrentDir)
+
+
+####################################################################
 
 
 
