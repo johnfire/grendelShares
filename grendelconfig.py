@@ -13,13 +13,10 @@ grendelOtherData = "/media/grendelData102/GrendelData/grendelOtherData/"
 grendelWorldData = "/media/grendelData102/GrendelData/grendelWorldData/"
 processFotoPath ="/media/grendelData102/lowLevelPrograms/processFoto.py "
 
-
-
 #def makeMsg(title, text, priority, reciever, otherRecievers, files):
 #    mytime = time.time()
 #    mymessage = gc.message
 #    mymessage.write(mytime, title, text, "AI", priority, reciever, otherRecievers, files)
-
 
 ################################################################
 def debugBreakPoint(location):
@@ -42,7 +39,7 @@ class message():
         self.otherRecipients = ""
         self.files = ""
 
-      pass
+    #######################################
 
     def write(self,timeStamp, title, text, primeRecipient, priority, sender, otherRecipients, files ):
 
@@ -77,8 +74,4 @@ class message():
             return datastuff
         os.chdir(myCurrentDir)
 
-
 ####################################################################
-
-
-
