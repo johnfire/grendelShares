@@ -28,8 +28,10 @@ def debugBreakPoint(location):
 ###############################################################
 ###############################################################
 class message():
+    indexNumber = 0
 
     def __init__(self):
+        self.indexNumber = message.indexNumber
         self.timeStamp = ""
         self.title = ""
         self.text = ""
@@ -38,8 +40,19 @@ class message():
         self.sender = ""
         self.otherRecipients = ""
         self.files = ""
+        message.indexNumber = message.indexNumber + 1
 
     #######################################
+    def saveMessageNumber(self):
+       mydata = [message.indexNumber]
+       jsonData = json.dumps(mydata, sort_keys = True,  indent = 4, separators = (",", ": "))
+       with open("currentMessageNumber", 'w') as f:
+           f.write(jsonData)
+
+    def loadMessageNumber (self):
+        pass
+
+
 
     def write(self,timeStamp, title, text, primeRecipient, priority, sender, otherRecipients, files ):
 
