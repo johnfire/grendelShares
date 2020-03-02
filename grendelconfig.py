@@ -4,9 +4,8 @@
 #
 
 import os
-import json
-#import sys
 import time
+import json
 
 DEBUG = True
 
@@ -23,31 +22,35 @@ grendelWorldData = "/media/grendelData102/GrendelData/grendelWorldData/"
 processFotoPath = "/media/grendelData102/lowLevelPrograms/processFoto.py"
 grendelLogData = "/media/grendelData102/grendelLogs/"
 
-###############################################################
 
+###############################################################
 def makeMsg(sender, title, text, priority, reciever, otherRecievers, files):
     debugBreakPoint("Entering makeMsg", "grendelconfig")
     mymessage = message()
     mytime = str(time.time())
-    mymessage.write(mytime, title, text, sender, priority, reciever, otherRecievers, files)
+    mymessage.write(mytime, title, text, sender, priority,
+                    reciever, otherRecievers, files)
+
 
 ################################################################
-def debugBreakPoint(message, location, stopBreak = False):
-    if DEBUG == True: print(str(time.time())+ " :" + str(message)+" :" + str(location) )
-    if stopBreak != False:
-        prompt ="Any key to continue, s stops program,at location "+ str(location)
+def debugBreakPoint(message, location, stopBreak=False):
+    if DEBUG is True: print(str(time.time()) + " :" + str(message) + " :" + str(location))
+    if stopBreak is True:
+        prompt = "Any key to continue, s stops program, at location " + str(location)
         myanswer = input(prompt)
         if myanswer == "s":
             shutdownGrendel()
     logdata = (str(time.time()) + " :" + str(message) + " :" + str(location) + " :" + str(stopBreak) + "\n")
     with open(grendelLogData + "masterlog.log", 'a+') as f:
-           f.write(logdata)
+        f.write(logdata)
     f.close
+
 
 ###############################################################
 def shutdownGrendel():
     debugBreakPoint("In shutdownGrendel", "grendelconfig.py")
-    makeMsg("zero","shutdown","shutdown","1","all","all","NONE")
+    makeMsg("zero", "shutdown", "shutdown", "1", "ALL", "ALL", "NONE")
+
 
 ###############################################################
 class message():
@@ -66,32 +69,41 @@ class message():
         self.files = ""
         message.indexNumber = message.indexNumber + 1
 
-    #######################################
+#######################################
     def saveMessageNumber(self):
-       debugBreakPoint("In saveMessageNumber", "grendelconfig.py")
-       mydata = [message.indexNumber]
-       jsonData = json.dumps(mydata, sort_keys = True,  indent = 4, separators = (",", ": "))
-       with open("currentMessageNumber", 'w') as f:
-           f.write(jsonData)
+        debugBreakPoint("In saveMessageNumber", "grendelconfig.py")
+        mydata = [message.indexNumber]
+        jsonData = json.dumps(mydata, sort_keys = True,  indent = 4, separators = (",", ": "))
+        with open("currentMessageNumber", 'w') as f:
+            f.write(jsonData)
 
-    ##############################################
 
-    def loadMessageNumber (self):
+##########################################
+    def loadMessageNumber(self):
         pass
 
-    ###############################################
+###############################################
 
-    def write(self, timeStamp, title, text, sender , priority, primeRecipient , otherRecipients, files ):
+    def write(self, timeStamp, title, text, sender, priority, primeRecipient, otherRecipients, files):
         debugBreakPoint("In messageWrite", "grendelconfig.py")
         debugBreakPoint(timeStamp, "grendelconfig.py")
-
         myCurrentDir = os.getcwd()
-        mydata = [timeStamp, title, text, sender, priority, primeRecipient, otherRecipients, files, self.indexNumber]
+        mydata = [timeStamp,
+                  title,
+                  text,
+                  sender,
+                  priority,
+                  primeRecipient,
+                  otherRecipients,
+                  files,
+                  self.indexNumber]
         debugBreakPoint(mydata, "grendelconfig.py")
-
-        jsonData = json.dumps(mydata, sort_keys = True,  indent = 4, separators = (",", ": "))
+        jsonData = json.dumps(mydata,
+                              sort_keys=True,
+                              indent=4,
+                              separators=(",", ": "))
         debugBreakPoint(jsonData, "grendelconfig.py")
-        debugBreakPoint(primeRecipient,"grendelconfig.py")
+        debugBreakPoint(primeRecipient, "grendelconfig.py")
         filename = str(timeStamp) + sender + ".json"
         if primeRecipient == "AI":
             os.chdir(msgPathAI)
@@ -99,15 +111,15 @@ class message():
             os.chdir(msgPathPY)
         elif primeRecipient == "OT":
             os.chdir(msgPathOT)
-        elif primeRecipient == "all":
-          for each in [msgPathAI, msgPathPY, msgPathOT]:
-            os.chdir(each)
-            with open(filename, 'w') as f:
-                f.write(jsonData)
+        elif primeRecipient == "ALL":
+            for each in [msgPathAI, msgPathPY, msgPathOT]:
+                os.chdir(each)
+                with open(filename, 'w') as f:
+                    f.write(jsonData)
             os.chdir(myCurrentDir)
-          return "0"
+            return "0"
         with open(filename, 'w') as f:
-             f.write(jsonData)
+            f.write(jsonData)
         os.chdir(myCurrentDir)
         return "0"
 
@@ -123,29 +135,27 @@ class message():
         elif program == "OT":
             os.chdir(msgPathOT)
         with open(filename, "r") as content:
-            if DEBUG == True: print("now trying to read json data")
+            if DEBUG is True: print("now trying to read json data")
             datastuff = json.load(content)
-            if DEBUG == True: print(datastuff)
+            if DEBUG is True: print(datastuff)
             self.timeStamp = datastuff[0]
-            if DEBUG == True: print(self.timeStamp)
+            if DEBUG is True: print(self.timeStamp)
             self.title = datastuff[1]
-            if DEBUG == True: print(self.title)
+            if DEBUG is True: print(self.title)
             self.text = datastuff[2]
-            if DEBUG == True: print(self.text)
+            if DEBUG is True: print(self.text)
             self.sender = datastuff[3]
-            if DEBUG == True: print(self.sender)
+            if DEBUG is True: print(self.sender)
             self.priority = datastuff[4]
-            if DEBUG == True: print(self.priority)
+            if DEBUG is True: print(self.priority)
             self.primeRecipient = datastuff[5]
-            if DEBUG == True: print(self.primeRecipient)
+            if DEBUG is True: print(self.primeRecipient)
             self.otherRecipients =datastuff[6]
-            if DEBUG == True: print(self.otherRecipients)
+            if DEBUG is True: print(self.otherRecipients)
             self.files = datastuff[7]
-            if DEBUG == True: print(self.files)
-            self.indexNumber =datastuff[8]
-            if DEBUG == True: print(self.indexNumber)
+#            if DEBUG is True: print(self.files)
+            self.indexNumber = datastuff[8]
+            if DEBUG is True: print(self.indexNumber)
 
             return datastuff
         os.chdir(myCurrentDir)
-
-####################################################################
