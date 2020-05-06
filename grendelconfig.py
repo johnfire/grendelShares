@@ -22,6 +22,9 @@ grendelWorldData = "/media/grendelData102/GrendelData/grendelWorldData/"
 processFotoPath = "/media/grendelData102/lowLevelPrograms/processFoto.py"
 grendelLogData = "/media/grendelData102/grendelLogs/"
 
+programPath = "/media/grendelData102/grendelProject/"
+
+
 
 ###############################################################
 def makeMsg(sender, title, text, priority, reciever, otherRecievers, files):
