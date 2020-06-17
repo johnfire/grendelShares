@@ -1,11 +1,16 @@
+"""
+
 # this is a set up and config file for the other programs.
+
 # also all code that is used by multiple programs goes here.
 # christopher rehm  15 jan 2020
 #
+"""
 
 import os
 import time
 import json
+import logging
 
 DEBUG = True
 
@@ -25,10 +30,33 @@ grendelLogData = "/media/grendelData102/grendelLogs/"
 programPath = "/media/grendelData102/grendelProject/"
 
 
-
 ###############################################################
 def makeMsg(sender, title, text, priority, reciever, otherRecievers, files):
-    debugBreakPoint("Entering makeMsg", "grendelconfig")
+    """Make a message to send.
+
+    Parameters
+    ----------
+    sender : TYPE
+        DESCRIPTION.
+    title : TYPE
+        DESCRIPTION.
+    text : TYPE
+        DESCRIPTION.
+    priority : TYPE
+        DESCRIPTION.
+    reciever : TYPE
+        DESCRIPTION.
+    otherRecievers : TYPE
+        DESCRIPTION.
+    files : TYPE
+        DESCRIPTION.
+
+    Returns
+    -------
+    None.
+
+    """
+    logging.debug('Entering makeMsg')
     mymessage = message()
     mytime = str(time.time())
     mymessage.write(mytime, sender, title, text, priority,
@@ -37,7 +65,22 @@ def makeMsg(sender, title, text, priority, reciever, otherRecievers, files):
 
 ################################################################
 def debugBreakPoint(message, location, stopBreak=False):
-    if DEBUG is True: print(str(time.time()) + " :" + str(message) + " :" + str(location))
+    """Create a debug break point.
+
+    Parameters
+    ----------
+    message : TYPE
+        DESCRIPTION.
+    location : TYPE
+        DESCRIPTION.
+    stopBreak : TYPE, optional
+        DESCRIPTION. The default is False.
+
+    Returns
+    -------
+    None.
+
+    """
     if stopBreak is True:
         prompt = "Any key to continue, s stops program, at location " + str(location)
         myanswer = input(prompt)
@@ -51,16 +94,25 @@ def debugBreakPoint(message, location, stopBreak=False):
 
 ###############################################################
 def shutdownGrendel():
-    debugBreakPoint("In shutdownGrendel", "grendelconfig.py")
+    """Grendel shutdown message.
+
+    Returns
+    -------
+    None.
+
+    """
+    logging.debug('In shutdownGrendel')
     makeMsg("zero", "shutdown", "shutdown", "1", "ALL", "ALL", "NONE")
 
 
 ###############################################################
 class message():
+    """Set up a message."""
+
     indexNumber = 0
 
     def __init__(self):
-        debugBreakPoint("In message init", "grendelconfig.py")
+        logging.debug('In message init')
         self.indexNumber = message.indexNumber
         self.timeStamp = ""
         self.sender = ""
@@ -74,22 +126,63 @@ class message():
 
 #######################################
     def saveMessageNumber(self):
-        debugBreakPoint("In saveMessageNumber", "grendelconfig.py")
+        """Save a message by number.
+
+        Returns
+        -------
+        None.
+
+        """
+        logging.debug('In saveMessageNumber')
         mydata = [message.indexNumber]
-        jsonData = json.dumps(mydata, sort_keys = True,  indent = 4, separators = (",", ": "))
+        jsonData = json.dumps(mydata, sort_keys=True,  indent=4, separators=(",", ": "))
         with open("currentMessageNumber", 'w') as f:
             f.write(jsonData)
 
-
 ##########################################
+
     def loadMessageNumber(self):
+        """Load a message by number.
+
+        Returns
+        -------
+        None.
+
+        """
+        logging.debug('in loadMessageNumber')
         pass
 
 ###############################################
 
     def write(self, timeStamp, title, text, sender, priority, primeRecipient, otherRecipients, files):
-        debugBreakPoint("In messageWrite", "grendelconfig.py")
-        debugBreakPoint(timeStamp, "grendelconfig.py")
+        """In write a message function.
+
+        Parameters
+        ----------
+        timeStamp : TYPE
+            DESCRIPTION.
+        title : TYPE
+            DESCRIPTION.
+        text : TYPE
+            DESCRIPTION.
+        sender : TYPE
+            DESCRIPTION.
+        priority : TYPE
+            DESCRIPTION.
+        primeRecipient : TYPE
+            DESCRIPTION.
+        otherRecipients : TYPE
+            DESCRIPTION.
+        files : TYPE
+            DESCRIPTION.
+
+        Returns
+        -------
+        str
+            DESCRIPTION.
+
+        """
+        logging.debug('In message Write')
         myCurrentDir = os.getcwd()
         mydata = [timeStamp,
                   sender,
@@ -100,13 +193,10 @@ class message():
                   otherRecipients,
                   files,
                   self.indexNumber]
-        debugBreakPoint(mydata, "grendelconfig.py")
         jsonData = json.dumps(mydata,
                               sort_keys=True,
                               indent=4,
                               separators=(",", ": "))
-        debugBreakPoint(jsonData, "grendelconfig.py")
-        debugBreakPoint(primeRecipient, "grendelconfig.py")
         filename = str(timeStamp) + sender + ".json"
         if primeRecipient == "AI":
             os.chdir(msgPathAI)
@@ -128,7 +218,20 @@ class message():
 
     ##########################################################
     def read(self, msgStamp, program):
-        debugBreakPoint("Message.read we are here", "grendelconfig.py")
+        """Read a message.
+
+        Parameters
+        ----------
+        msgStamp : TYPE
+            DESCRIPTION.
+        program : TYPE
+            DESCRIPTION.
+
+        Returns
+        -------
+        None.
+
+        """
         myCurrentDir = os.getcwd()
         filename = msgStamp
         if program == "AI":
@@ -138,27 +241,19 @@ class message():
         elif program == "OT":
             os.chdir(msgPathOT)
         with open(filename, "r") as content:
-            if DEBUG is True: print("now trying to read json data")
+            logging.debug('now trying to read json data')
             datastuff = json.load(content)
-            if DEBUG is True: print(datastuff)
             self.timeStamp = datastuff[0]
-            if DEBUG is True: print(self.timeStamp)
+            logging.debug(self.timeStamp)
             self.title = datastuff[1]
-            if DEBUG is True: print(self.title)
+            logging.debug(self.title)
             self.text = datastuff[2]
-            if DEBUG is True: print(self.text)
             self.sender = datastuff[3]
-            if DEBUG is True: print(self.sender)
             self.priority = datastuff[4]
-            if DEBUG is True: print(self.priority)
             self.primeRecipient = datastuff[5]
-            if DEBUG is True: print(self.primeRecipient)
-            self.otherRecipients =datastuff[6]
-            if DEBUG is True: print(self.otherRecipients)
+            self.otherRecipients = datastuff[6]
             self.files = datastuff[7]
-#            if DEBUG is True: print(self.files)
             self.indexNumber = datastuff[8]
-            if DEBUG is True: print(self.indexNumber)
 
             return datastuff
         os.chdir(myCurrentDir)
