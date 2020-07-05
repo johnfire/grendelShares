@@ -11,6 +11,7 @@ import os
 import time
 import json
 import logging
+import itertools
 
 DEBUG = True
 
@@ -57,10 +58,9 @@ def makeMsg(sender, title, text, priority, reciever, otherRecievers, files):
 
     """
     logging.debug('Entering makeMsg')
-    mymessage = message()
     mytime = str(time.time())
-    mymessage.write(mytime, sender, title, text, priority,
-                    reciever, otherRecievers, files)
+    mymessage = message(mytime, sender, title, text, priority, reciever, otherRecievers, files)
+    mymessage.write()
 
 
 ################################################################
@@ -109,20 +109,23 @@ def shutdownGrendel():
 class message():
     """Set up a message."""
 
-    indexNumber = 0
+    id_generator = itertools.count(1)
 
-    def __init__(self):
+    def __init__(self, timeStamp=".", sender=".", title=".", text=".", priority=".", Recipient=".", otherRecipients=".", files="."):
+        """initialises a message object, requires null values for initialiation if object is being created to take data from a .json file.
+        the message.read loads the actual data to the instance of the message
+        """
         logging.debug('In message init')
-        self.indexNumber = message.indexNumber
-        self.timeStamp = ""
-        self.sender = ""
-        self.title = ""
-        self.text = ""
-        self.primeRecipient = ""
-        self.priority = ""
-        self.otherRecipients = ""
-        self.files = ""
-        message.indexNumber = message.indexNumber + 1
+        self.indexNumber = next(self.id_generator)
+        self.timeStamp = timeStamp
+        self.sender = sender
+        self.title = title
+        self.text = text
+        self.priority = priority
+        self.Recipient = Recipient
+        self.otherRecipients = otherRecipients
+        self.files = files
+
 
 #######################################
     def saveMessageNumber(self):
@@ -154,7 +157,7 @@ class message():
 
 ###############################################
 
-    def write(self, timeStamp, title, text, sender, priority, primeRecipient, otherRecipients, files):
+    def write(self):
         """In write a message function.
 
         Parameters
@@ -184,27 +187,28 @@ class message():
         """
         logging.debug('In message Write')
         myCurrentDir = os.getcwd()
-        mydata = [timeStamp,
-                  sender,
-                  title,
-                  text,
-                  priority,
-                  primeRecipient,
-                  otherRecipients,
-                  files,
+        mydata = [self.timeStamp,
+                  self.sender,
+                  self.title,
+                  self.text,
+                  self.priority,
+                  self.Recipient,
+                  self.otherRecipients,
+                  self.files,
                   self.indexNumber]
         jsonData = json.dumps(mydata,
                               sort_keys=True,
                               indent=4,
                               separators=(",", ": "))
-        filename = str(timeStamp) + sender + ".json"
-        if primeRecipient == "AI":
+        # filename = str(timeStamp) + sender + ".json"
+        filename = str(self.indexNumber) + self.sender + ".json"
+        if self.Recipient == "AI":
             os.chdir(msgPathAI)
-        elif primeRecipient == "PY":
+        elif self.Recipient == "PY":
             os.chdir(msgPathPY)
-        elif primeRecipient == "OT":
+        elif self.Recipient == "OT":
             os.chdir(msgPathOT)
-        elif primeRecipient == "ALL":
+        elif self.Recipient == "ALL":
             for each in [msgPathAI, msgPathPY, msgPathOT]:
                 os.chdir(each)
                 with open(filename, 'w') as f:
@@ -250,7 +254,7 @@ class message():
             self.text = datastuff[2]
             self.sender = datastuff[3]
             self.priority = datastuff[4]
-            self.primeRecipient = datastuff[5]
+            self.Recipient = datastuff[5]
             self.otherRecipients = datastuff[6]
             self.files = datastuff[7]
             self.indexNumber = datastuff[8]
