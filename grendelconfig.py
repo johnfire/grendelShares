@@ -15,6 +15,12 @@ import itertools
 
 DEBUG = True
 
+#constants
+
+SLEEP_TIME_FOR_DEBUGGING = 15
+
+#Path constants
+
 msgPathBase = "mnt/grendelShares"
 
 msgPath = msgPathBase + "/GrendelData/grendelMsgs/"
