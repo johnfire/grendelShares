@@ -14,11 +14,8 @@ import logging
 import itertools
 
 DEBUG = True
-msgPathBase ="/media/grendelData/"
 
-
-
-
+msgPathBase ="/media/grendelData/XX"
 
 msgPath = "/media/grendelData102/GrendelData/grendelMsgs/"
 msgPathAI = "/media/grendelData102/GrendelData/grendelMsgs/AI"
