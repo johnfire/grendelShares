@@ -21,7 +21,7 @@ SLEEP_TIME_FOR_DEBUGGING = 15
 
 #Path constants
 
-msgPathBase = "mnt/grendelShares"
+msgPathBase = "/mnt/grendelShares"
 
 msgPath = msgPathBase + "/GrendelData/grendelMsgs/"
 msgPathAI = msgPathBase + "/GrendelData/grendelMsgs/AI"
