@@ -15,23 +15,22 @@ import itertools
 
 DEBUG = True
 
-msgPathBase ="/media/grendelData/XX"
+msgPathBase = "mnt/grendelShares"
 
-msgPath = "/media/grendelData102/GrendelData/grendelMsgs/"
-msgPathAI = "/media/grendelData102/GrendelData/grendelMsgs/AI"
-msgPathPY = "/media/grendelData102/GrendelData/grendelMsgs/PY"
-msgPathOT = "/media/grendelData102/GrendelData/grendelMsgs/OT"
+msgPath = msgPathBase + "/GrendelData/grendelMsgs/"
+msgPathAI = msgPathBase + "/GrendelData/grendelMsgs/AI"
+msgPathPY = msgPathBase + "/GrendelData/grendelMsgs/PY"
+msgPathOT = msgPathBase + "/GrendelData/grendelMsgs/OT"
 
-fotoPath = "/media/grendelData102/GrendelData/grendelFotos/"
-audioPath = "/media/grendelData102/GrendelData/grendellAudio/"
+fotoPath = msgPathBase + "/GrendelData/grendelFotos/"
+audioPath = msgPathBase + "/GrendelData/grendellAudio/"
 
-grendelOtherData = "/media/grendelData102/GrendelData/grendelOtherData/"
-grendelWorldData = "/media/grendelData102/GrendelData/grendelWorldData/"
-processFotoPath = "/media/grendelData102/lowLevelPrograms/processFoto.py"
-grendelLogData = "/media/grendelData102/grendelLogs/"
+grendelOtherData = msgPathBase + "/GrendelData/grendelOtherData/"
+grendelWorldData = msgPathBase + "/GrendelData/grendelWorldData/"
+processFotoPath = msgPathBase + "/lowLevelPrograms/processFoto.py"
+grendelLogData = msgPathBase + "/grendelLogs/"
 
-programPath = "/media/grendelData102/grendelProject/"
-
+programPath = msgPathBase + "/grendelProject/"
 
 ###############################################################
 def makeMsg(sender, title, text, priority, reciever, otherRecievers, files):
